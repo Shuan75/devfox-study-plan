@@ -1,0 +1,55 @@
+debug: false
+management.endpoints.web.exposure.include: "*"
+#actuatorのendpointの中隠したfileを全部活性化 => 見たい機能たちを全部見られる
+
+logging:
+  level:
+    com.devfox.devfoxstudy: debug
+    org.springframework.web.servlet: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+# request, response LogだけDebugで見る
+# jpa技術を使う時QueryLogのBindingParameterが?で見るが、それを見られる
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/board
+    username: jong
+    password: testisTestpw@!
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    defer-datasource-initialization: true
+    # defer-datasource-initialization: true => test用のdatabase
+    hibernate.ddl-auto: create
+    openInView: false
+    showSql: true
+    properties:
+# 　私が使ってる具現体で他の専用に使うpropertyがある場合活性化
+      hibernate.format_sql: true
+#      1行に出てくるDebugQuery文をformattingして表示します
+      hibernate.default_batch_fetch_size: 100
+#      JPAで複雑な連関関係mappingになってるquery文をbulkでselectしてくれる
+  sql.init.mode: always
+  #  resources/data.sqlをいつ作動するかのルール
+  data.rest:
+    base-path: /api
+    detection-strategy: annotated
+  thymeleaf3.decoupled-logic: true
+
+#  持ってるprojectのrepositoryを確認する時、RestApiで露出するのか戦略 annotatedだけ
+
+#    thymeleaf.cache: false
+#  data.rest:
+#    base-path: /api
+#    detection-strategy: annotated
+
+
+#spring:
+#  config.activate.on-profile: testdb
+#  TestDb profileがactivateなった時この文を実行
+#  datasource:
+#    url: jdbc:h2:mem:board;mode=mysql
+#    driverClassName: org.h2.driver
+#  sql.init.mode: always
+#  test.database.replace: none
+# @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+# testDBを使わず、InMemoryで設定したことを使う

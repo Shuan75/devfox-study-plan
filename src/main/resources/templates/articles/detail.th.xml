@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#header" th:replace="header :: header"></attr>
+    <attr sel="#footer" th:replace="footer :: footer"></attr>
+<!--headerを探す、いくつかがある時はIDを付与して区別-->
+</thlogic>
