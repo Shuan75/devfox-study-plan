@@ -47,7 +47,7 @@ public class Article extends AuditingFields { // indexes : 追加の書き込み
     // Setterをfieldにつける理由は使用者が特定のfieldに接近して設定を変わる事を防ぐため(ex : id)
 
     @ToString.Exclude
-    @OrderBy("id")
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
     // 意図 : このarticleに連動されるcommentは重複を許容せず、全部集めてCollectionで見る

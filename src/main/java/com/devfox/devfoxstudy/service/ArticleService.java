@@ -95,6 +95,7 @@ public class ArticleService {
             Article article = articleRepository.getReferenceById(articleId);
             UserAccount userAccount = userAccountRepository.getReferenceById(dto.userAccountDto().userId());
 
+            // getUserAccountとuserAccountを比較
             if (article.getUserAccount().equals(userAccount)) {
                 if (dto.title() != null) {article.setTitle(dto.title());}
                 if (dto.content() != null) {article.setContent(dto.content());}
@@ -123,8 +124,8 @@ public class ArticleService {
 
     }
 
-    public void deleteArticle(long articleId) {
-        articleRepository.deleteById(articleId);
+    public void deleteArticle(long articleId, String userId) { // articleIdを持っても作成者がないと削除できないように
+        articleRepository.deleteByIdAndUserAccount_UserId(articleId, userId);
     }
 
     public long getArticleCount() {
@@ -138,7 +139,7 @@ public class ArticleService {
         }
 
         return articleRepository.findByHashtagNames(List.of(hashtagName), pageable)
-                .map(ArticleDto::from);
+                .map(ArticleDto::from); // Dtoで変わるためMap
     }
 
     public List<String> getHashtags() {

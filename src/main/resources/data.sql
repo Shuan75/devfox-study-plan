@@ -13,7 +13,7 @@ values ('uno3', '{noop}asdf1234', 'Uno3', 'uno3@mail.com', 'I am Uno3.', now(), 
 ;
 insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at,
                           modified_by)
-values ('jong', 'hyeon1234', 'jong', 'elki751@mail.com', 'I am jong.', now(), 'jong', now(), 'jong')
+values ('jong', '{noop}hyeon1234', 'jong', 'elki751@mail.com', 'I am jong.', now(), 'jong', now(), 'jong')
 ;
 insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at,
                           modified_by)

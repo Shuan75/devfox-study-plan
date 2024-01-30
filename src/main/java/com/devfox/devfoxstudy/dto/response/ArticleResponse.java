@@ -4,6 +4,7 @@ package com.devfox.devfoxstudy.dto.response;
 import com.devfox.devfoxstudy.dto.ArticleDto;
 import com.devfox.devfoxstudy.dto.HashtagDto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;

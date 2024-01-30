@@ -29,7 +29,7 @@
             searchType=${searchType.name},
             searchValue=${param.searchValue}
         )}"/>
-        <attr sel="th.user-id/a" th:text="'作成者'" th:href="@{/articles/search-hashtag(
+        <attr sel="th.user-id/a" th:text="'UserId'" th:href="@{/articles/search-hashtag(
             page=${articles.number},
             sort='userAccount.userId' + (*{sort.getOrderFor('userAccount.userId')} != null ? (*{sort.getOrderFor('userAccount.userId').direction.name} != 'DESC' ? ',desc' : '') : ''),
             searchType=${searchType.name},

@@ -2,6 +2,7 @@ package com.devfox.devfoxstudy.controller;
 
 import com.devfox.devfoxstudy.dto.UserAccountDto;
 import com.devfox.devfoxstudy.dto.request.ArticleCommentRequest;
+import com.devfox.devfoxstudy.security.BoardPrincipal;
 import com.devfox.devfoxstudy.service.ArticleCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,22 +20,25 @@ public class ArticleCommentController {
 
     @PostMapping("/new")
     public String postNewArticleComment(
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal,
             ArticleCommentRequest articleCommentRequest
     ) {
-        articleCommentService.saveArticleComment(articleCommentRequest.toDto(UserAccountDto.of("jong", "asdf1234", "elki751@gmail.com", "jong", "memo",
-                null, null, null, null)));
+        articleCommentService.saveArticleComment(articleCommentRequest.toDto(boardPrincipal.toDto()));
 
         return "redirect:/articles/" + articleCommentRequest.articleId();
+        // Commentを作成した後、また同じPageを見せるため
     }
 
     @PostMapping("/{commentId}/delete")
     public String deleteArticleComment(
             @PathVariable Long commentId,
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal,
             Long articleId
     ) {
-        articleCommentService.deleteArticleComment(commentId, "jong");
+        articleCommentService.deleteArticleComment(commentId, boardPrincipal.getUsername());
 
         return "redirect:/articles/" + articleId;
+        // 消した後ArticleのIdが必要
     }
 
 }

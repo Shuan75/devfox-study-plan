@@ -10,7 +10,7 @@ public enum SearchType {
     HASHTAG("Hashtag");
 
     @Getter
-    private final String description;
+    private final String description; //実際にSearchTypeでDescriptionを読みたいとGetterが必要
 
     SearchType(String description) {
         this.description = description;

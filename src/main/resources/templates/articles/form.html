@@ -17,7 +17,8 @@
         <h1>掲示文作成</h1>
     </header>
 
-    <form action="articles/write" method="post">
+
+    <form id="article-form">
         <div class="row mb-3 justify-content-md-center">
             <label for="title" class="col-sm-2 col-lg-1 col-form-label text-sm-end">題目</label>
             <div class="col-sm-8 col-lg-9">
@@ -27,22 +28,23 @@
         <div class="row mb-3 justify-content-md-center">
             <label for="content" class="col-sm-2 col-lg-1 col-form-label text-sm-end">内容</label>
             <div class="col-sm-8 col-lg-9">
-                <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
             </div>
         </div>
-        <div class="row mb-4 justify-content-md-center">
-            <label for="hashtag" class="col-sm-2 col-lg-1 col-form-label text-sm-end">Hashtag</label>
+        <div class="row mb-3 justify-content-md-center">
+            <label for="hashtag" class="col-sm-2 col-lg-1 col-form-label text-sm-end">hashtag</label>
             <div class="col-sm-8 col-lg-9">
                 <input type="text" class="form-control" id="hashtag" name="hashtag">
             </div>
         </div>
         <div class="row mb-5 justify-content-md-center">
             <div class="col-sm-10 d-grid gap-2 d-sm-flex justify-content-sm-end">
-                <button type="submit" class="btn btn-primary" id="submit-button">書き込み</button>
-                <button type="button" class="btn btn-secondary" id="cancel-button">取り消し</button>
+                <button type="submit" class="btn btn-primary" id="submit-button">貯蔵</button>
+                <button type="button" class="btn btn-secondary" id="cancel-button">取消し</button>
             </div>
         </div>
     </form>
+</div>
 </div>
 
 <footer id="footer"></footer>

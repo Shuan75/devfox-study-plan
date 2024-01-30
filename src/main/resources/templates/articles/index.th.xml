@@ -6,6 +6,11 @@
 
     <!--DataMapping-->
 
+    <!-- th:value="${searchType} => searchTypeを受けてnameとdescriptionを出力できる仕組み  -->
+    <!-- selectedを入れてsearchTypeNullCheck   -->
+    <!--paramは現在GetParameterを意味、だからGetParameterでSearchTypeを持ち出す    -->
+    <!--selected => Hashtagで検索した後、題目検索に戻るのを防いで次の検索結果にも反映するように作る    -->
+    <!--ParamMapから持ち出すSearchTypeはEnum保障ができない(GenericTypeはObject)だからtoStringを使う    -->
     <attr sel="main" th:object="${articles}">
         <attr sel="#search-form" th:action="@{/articles}" th:method="get" />
         <attr sel="#search-type" th:remove="all-but-first">
@@ -18,6 +23,12 @@
         </attr>
         <attr sel="#search-value" th:value="${param.searchValue}" />
 
+        <!--th.title, hashtag, tuser-id, created-atをselect        -->
+        <!--articlesでPage情報とSort情報を入れてSortに整列したい内容を入れる        -->
+        <!--SortParameterに入れるべきのDataと形式はSpringDataのPageInterfaceから基準が整理されてる、それを使う        -->
+        <!--  sort='userAccount.userId'  =>Controllerが処理して出すResponse値(ArticleResponse)が最終的にViewから受けるDataだが、
+                Pageableと同じDtoに適用されるのはないServiceLogicでDtoを経ていき、
+                実際にPageableが適用され機能するのは(Service)RepositoryLayerのSwitchCord-->
         <attr sel="#article-table">
             <attr sel="thead/tr">
                 <attr sel="th.title/a" th:text="'題目'" th:href="@{/articles(
@@ -32,7 +43,7 @@
             searchType=${param.searchType},
             searchValue=${param.searchValue}
         )}"/>
-                <attr sel="th.user-id/a" th:text="'作成者'" th:href="@{/articles(
+                <attr sel="th.user-id/a" th:text="'UserId'" th:href="@{/articles(
             page=${articles.number},
             sort='userAccount.userId' + (*{sort.getOrderFor('userAccount.userId')} != null ? (*{sort.getOrderFor('userAccount.userId').direction.name} != 'DESC' ? ',desc' : '') : ''),
             searchType=${param.searchType},
@@ -61,8 +72,14 @@
             </attr>
         </attr>
 
+        <!--認証完了時        -->
         <attr sel="#write-article" sec:authorize="isAuthenticated()" th:href="@{/articles/form}" />
 
+        <!-- paginationでnavIdSelect        -->
+        <!-- li[0]/a => listのaを選択       -->
+        <!--articles方にlinkを探す        -->
+        <!--(page=${articles.number -1} => getParameteを()で表現        -->
+        <!-- 現在pageがない時選択を防ぐためdisabled処理        -->
         <attr sel="#pagination">
             <attr sel="li[0]/a"
                   th:text="'previous'"
