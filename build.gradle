@@ -79,3 +79,4 @@ jar {
         attributes('Main-Class': 'com.devfox.devfoxstudy.DevfoxStudyPlanApplication')
     }
 }
+
