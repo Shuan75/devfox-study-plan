@@ -5,8 +5,10 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,12 +18,19 @@ public record BoardPrincipal(
         Collection<? extends GrantedAuthority> authorities,
         String email,
         String nickname,
-        String memo
-) implements UserDetails { // User.javaを使わない理由は必要ない設定たちがたくさんあるから
+        String memo,
+        Map<String, Object> oAuth2Attributes
+        // 毎回TypeCastingをしなければならないし、Type安定性をTypeSafetyを適切に活用できない短所があるが
+        // どんなProviderが提供することでもOAuth2を使えるように開く
+) implements UserDetails, OAuth2User { // User.javaを使わない理由は必要ない設定たちがたくさんあるから
 
     // 実際に使う開発者は権限情報を入れる必要がない事をこのmethodを通じてわかる
     // 初めての認証が実行された時ConstructorからRoleTypeが作られる
     public static BoardPrincipal of(String username, String password, String email, String nickname, String memo) {
+        return of(username, password, email, nickname, memo, Map.of());
+        // 既存Attributesがない時のSpec
+    }
+    public static BoardPrincipal of(String username, String password, String email, String nickname, String memo, Map<String, Object> oAuth2Attributes) {
         // もし権限情報をCollectionDataで貯蔵する時、同じ権限を持つ必要がないからSet
         // RoleType => 後で拡張を考慮して作ったもの
         Set<RoleType> roleTypes = Set.of(RoleType.USER);
@@ -35,7 +44,8 @@ public record BoardPrincipal(
                         .collect(Collectors.toUnmodifiableSet()),
                 email,
                 nickname,
-                memo
+                memo,
+                oAuth2Attributes
         );
     }
 
@@ -97,6 +107,17 @@ public record BoardPrincipal(
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
+    }
+    // OAuth2認証Serviceで会員情報や認証情報たちがObject方式でくれるとどんなDataTypeでも受け入れる
+
+    @Override
+    public String getName() {
+        return null;
     }
 
     public enum RoleType {
